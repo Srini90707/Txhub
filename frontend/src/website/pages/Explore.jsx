@@ -315,7 +315,7 @@ const Explore = () => {
                           <Link to="/my-courses" className="block w-full">
                             <button className="w-full py-3.5 rounded-2xl bg-green-50 text-green-600 font-black text-sm border border-green-100 flex items-center justify-center gap-2 hover:bg-green-100 transition-all">
                               <CheckCircle size={20} />
-                              Already Enrolled
+                              You are Enrolled
                             </button>
                           </Link>
                         ) : (

@@ -71,16 +71,20 @@ const CartPage = () => {
               </button>
             </div>
           ) : (
-            <div className="grid lg:grid-cols-3 gap-10 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10 items-start">
 
               {/* Items List */}
               <div className="lg:col-span-2 space-y-4">
                 {cart.map((item, index) => (
                   <div
                     key={index}
-                    className="group bg-white border border-slate-100 rounded-3xl p-5 flex gap-6 items-center hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500"
+                    className="group bg-white border border-slate-100 rounded-2xl p-3 flex items-center gap-3 
+  hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500
+
+  md:p-5 md:gap-6 md:rounded-3xl"
                   >
-                    <div className="w-24 h-24 rounded-2xl overflow-hidden shrink-0 shadow-inner">
+                    <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 shadow-inner 
+md:w-24 md:h-24 md:rounded-2xl">
                       <img
                         src={item.img}
                         alt={item.title}
@@ -92,8 +96,8 @@ const CartPage = () => {
                       <p className="text-blue-600 text-[10px] font-black uppercase tracking-[0.2em] mb-1">
                         {item.category || "Course"}
                       </p>
-                      <h2 className="text-lg font-black text-slate-800 truncate">{item.title}</h2>
-                      <div className="flex items-center gap-4 mt-2">
+                      <h2 className="text-sm font-black text-slate-800 truncate md:text-lg">{item.title}</h2>
+                      <div className="flex items-center gap-2 mt-1 md:gap-4 md:mt-2">
                         <span className="text-slate-400 text-xs font-bold uppercase tracking-widest bg-slate-50 px-2 py-1 rounded-md">
                           {item.mode || "Online"}
                         </span>
@@ -103,7 +107,7 @@ const CartPage = () => {
 
                     <button
                       onClick={() => removeFromCart(item.title)}
-                      className="p-4 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-2xl transition-all group/btn"
+                      className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all group/btn md:p-4 md:rounded-2xl"
                     >
                       <Trash2 size={20} className="group-hover/btn:scale-110 transition-transform" />
                     </button>

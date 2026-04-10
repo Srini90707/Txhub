@@ -286,7 +286,10 @@ const CourseDetails = () => {
   }
 
   const added = isInCart(course.title);
-  const enrolled = enrollments.some(e => e.items.some(item => item.id === course.id));
+  const enrolled = enrollments.some(e => 
+    (e.title && (e.title.includes(course.title) || course.title.includes(e.title))) || 
+    (e.items && e.items.some(item => item.id === course.id))
+  );
 
   const handleEnroll = () => {
     if (!isLoggedIn) {
@@ -577,7 +580,7 @@ const CourseDetails = () => {
                     onClick={() => navigate("/my-courses")}
                     className="w-full py-5 bg-green-600 text-white rounded-2xl font-black text-xl transition-all shadow-2xl shadow-green-500/20 hover:-translate-y-1 active:translate-y-0 flex items-center justify-center gap-3"
                   >
-                    Go to My Courses <ArrowRight size={22} />
+                    Start Course <ArrowRight size={22} />
                   </button>
                 ) : (
                   <>
