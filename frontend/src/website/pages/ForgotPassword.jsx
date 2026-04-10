@@ -40,10 +40,10 @@ const ForgotPassword = () => {
     let errs = {};
     if (!newPassword) errs.newPassword = "Password is required";
     else if (newPassword.length < 6) errs.newPassword = "Minimum 6 characters required";
-    
+
     if (!confirmPassword) errs.confirmPassword = "Please confirm password";
     else if (newPassword !== confirmPassword) errs.confirmPassword = "Passwords do not match";
-    
+
     setFieldErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -51,12 +51,12 @@ const ForgotPassword = () => {
   const handleRequest = async (e) => {
     e.preventDefault();
     if (!validateEmail()) return;
-    
+
     setLoading(true);
     setError("");
 
     try {
-      const resp = await fetch("http://localhost:8000/api/forgot-password/", {
+      const resp = await fetch("http://192.168.1.23:8000/api/forgot-password/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, action: "request" }),
@@ -91,7 +91,7 @@ const ForgotPassword = () => {
     setError("");
 
     try {
-      const resp = await fetch("http://localhost:8000/api/forgot-password/", {
+      const resp = await fetch("http://192.168.1.23:8000/api/forgot-password/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -127,7 +127,7 @@ const ForgotPassword = () => {
     setError("");
 
     try {
-      const resp = await fetch("http://localhost:8000/api/forgot-password/", {
+      const resp = await fetch("http://192.168.1.23:8000/api/forgot-password/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -212,11 +212,10 @@ const ForgotPassword = () => {
                     setFieldErrors({});
                   }}
                   placeholder="Email Address"
-                  className={`w-full pl-12 pr-4 py-4 rounded-2xl outline-none transition-all font-medium ${
-                    fieldErrors.email 
-                      ? 'bg-red-50 border border-red-200 text-red-900 placeholder:text-red-300' 
+                  className={`w-full pl-12 pr-4 py-4 rounded-2xl outline-none transition-all font-medium ${fieldErrors.email
+                      ? 'bg-red-50 border border-red-200 text-red-900 placeholder:text-red-300'
                       : 'bg-gray-100/80 focus:ring-2 focus:ring-blue-500/20 focus:bg-white text-gray-700'
-                  }`}
+                    }`}
                 />
               </div>
               {fieldErrors.email && <p className="text-red-500 text-[10px] font-bold ml-4 mt-1">{fieldErrors.email}</p>}
@@ -270,14 +269,13 @@ const ForgotPassword = () => {
                   value={newPassword}
                   onChange={(e) => {
                     setNewPassword(e.target.value);
-                    setFieldErrors(prev => ({...prev, newPassword: ""}));
+                    setFieldErrors(prev => ({ ...prev, newPassword: "" }));
                   }}
                   placeholder="New Password"
-                  className={`w-full pl-12 pr-12 py-4 rounded-2xl outline-none transition-all font-medium ${
-                    fieldErrors.newPassword 
-                      ? 'bg-red-50 border border-red-200 text-red-900' 
+                  className={`w-full pl-12 pr-12 py-4 rounded-2xl outline-none transition-all font-medium ${fieldErrors.newPassword
+                      ? 'bg-red-50 border border-red-200 text-red-900'
                       : 'bg-gray-100/80 focus:ring-2 focus:ring-blue-500/20 focus:bg-white text-gray-700'
-                  }`}
+                    }`}
                 />
                 <button
                   type="button"
@@ -300,14 +298,13 @@ const ForgotPassword = () => {
                   value={confirmPassword}
                   onChange={(e) => {
                     setConfirmPassword(e.target.value);
-                    setFieldErrors(prev => ({...prev, confirmPassword: ""}));
+                    setFieldErrors(prev => ({ ...prev, confirmPassword: "" }));
                   }}
                   placeholder="Confirm New Password"
-                  className={`w-full pl-12 pr-12 py-4 rounded-2xl outline-none transition-all font-medium ${
-                    fieldErrors.confirmPassword 
-                      ? 'bg-red-50 border border-red-200 text-red-900' 
+                  className={`w-full pl-12 pr-12 py-4 rounded-2xl outline-none transition-all font-medium ${fieldErrors.confirmPassword
+                      ? 'bg-red-50 border border-red-200 text-red-900'
                       : 'bg-gray-100/80 focus:ring-2 focus:ring-blue-500/20 focus:bg-white text-gray-700'
-                  }`}
+                    }`}
                 />
                 <button
                   type="button"

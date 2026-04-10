@@ -184,6 +184,7 @@ class Enrollment(models.Model):
  
 COURSE_CHOICES = [
     ('All Courses', 'All Courses'),
+    ('React Full Stack Development', 'React Full Stack Development'),
     ('Java Full Stack', 'Java Full Stack'),
     ('Python Development', 'Python Development'),
     ('MERN Stack', 'MERN Stack'),

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
     ShieldCheck, Video, PlayCircle, Link as LinkIcon,
-    Send, Clock, Users, BookOpen, Trash2, Calendar, ChevronDown
+    Send, Clock, Users, BookOpen, Trash2, ChevronDown
 } from 'lucide-react';
 
 const ClassManagement = () => {
@@ -10,9 +10,9 @@ const ClassManagement = () => {
     const fetchAllData = async () => {
         try {
             const [liveRes, recRes, resRes] = await Promise.all([
-                fetch("http://localhost:8000/api/live/"),
-                fetch("http://localhost:8000/api/recorded/"),
-                fetch("http://localhost:8000/api/resource/")
+                fetch("http://192.168.1.23:8000/api/live/"),
+                fetch("http://192.168.1.23:8000/api/recorded/"),
+                fetch("http://192.168.1.23:8000/api/resource/")
             ]);
 
             const liveData = await liveRes.json();
@@ -103,17 +103,17 @@ const ClassManagement = () => {
 
             if (activeTab === "live") {
                 if (!current.topic || !current.link) return alert("Required fields missing");
-                url = "http://localhost:8000/api/live/";
+                url = "http://192.168.1.23:8000/api/live/";
                 payload = current;
             }
             else if (activeTab === "recorded") {
                 if (!current.title || !current.videoLink) return alert("Required fields missing");
-                url = "http://localhost:8000/api/recorded/";
+                url = "http://192.168.1.23:8000/api/recorded/";
                 payload = current;
             }
             else {
                 if (!current.title || !current.driveLink) return alert("Required fields missing");
-                url = "http://localhost:8000/api/resource/";
+                url = "http://192.168.1.23:8000/api/resource/";
                 payload = current;
             }
 
@@ -141,9 +141,9 @@ const ClassManagement = () => {
         try {
             let url = "";
 
-            if (type === "live") url = `http://localhost:8000/api/live-classes/${id}/`;
-            if (type === "recorded") url = `http://localhost:8000/api/recorded-classes/${id}/`;
-            if (type === "resource") url = `http://localhost:8000/api/resources/${id}/`;
+            if (type === "live") url = `http://192.168.1.23:8000/api/live-classes/${id}/`;
+            if (type === "recorded") url = `http://192.168.1.23:8000/api/recorded-classes/${id}/`;
+            if (type === "resource") url = `http://192.168.1.23:8000/api/resources/${id}/`;
 
             await fetch(url, {
                 method: "DELETE"
@@ -286,6 +286,7 @@ const ClassManagement = () => {
                                         className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 outline-none text-sm font-black text-slate-700 appearance-none cursor-pointer"
                                     >
                                         <option>All Courses</option>
+                                        <option>React Full Stack Development</option>
                                         <option>Java Full Stack</option>
                                         <option>Python Development</option>
                                         <option>MERN Stack</option>
@@ -341,7 +342,7 @@ const ClassManagement = () => {
                                 </div>
                             ) : (
                                 feed.map((item) => (
-                                    <div key={item.id} className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm relative group hover:shadow-md transition-shadow">
+                                    <div key={`${item.type}-${item.id}`} className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm relative group hover:shadow-md transition-shadow">
 
                                         {/* Delete Button */}
                                         <button onClick={() => handleDelete(item.id, item.type)} className="absolute top-6 right-6 text-slate-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">

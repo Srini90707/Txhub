@@ -59,11 +59,11 @@ const Register = () => {
     }
 
     setErrors(newErrors);
-    
+
     if (Object.keys(newErrors).length > 0) {
       toast.error("Please fix the validation errors");
     }
-    
+
     return Object.keys(newErrors).length === 0;
   };
 
@@ -82,7 +82,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8000/api/register/", {
+      const res = await fetch("http://192.168.1.23:8000/api/register/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form)
@@ -106,10 +106,9 @@ const Register = () => {
   };
 
   const inputStyle = (field) =>
-    `w-full pl-12 pr-12 py-3.5 rounded-xl border transition-all text-sm shadow-sm outline-none ${
-      errors[field] 
-        ? "bg-red-50/50 border-red-300 focus:ring-4 focus:ring-red-100 text-red-900 placeholder:text-red-300" 
-        : "bg-white border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 text-gray-700 placeholder:text-gray-400"
+    `w-full pl-12 pr-12 py-3.5 rounded-xl border transition-all text-sm shadow-sm outline-none ${errors[field]
+      ? "bg-red-50/50 border-red-300 focus:ring-4 focus:ring-red-100 text-red-900 placeholder:text-red-300"
+      : "bg-white border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 text-gray-700 placeholder:text-gray-400"
     }`;
 
   return (
@@ -260,7 +259,7 @@ const Register = () => {
           </div>
 
           {/* GOOGLE BUTTON (REAL STYLE) */}
-          <button 
+          <button
             className="w-full flex items-center justify-center gap-3 py-3 border rounded-xl bg-white hover:bg-gray-50 transition shadow-sm"
             onClick={() => toast.success("Google integration coming soon!")}
           >

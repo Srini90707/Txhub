@@ -16,7 +16,7 @@
 // //     coupon: '',
 // //     paymentStatus: 'Pending' // New Field
 // //   });
-  
+
 // //   const [users, setUsers] = useState([
 // //     { 
 // //       id: Date.now(), 
@@ -87,14 +87,14 @@
 // //       </div>
 
 // //       <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
-        
+
 // //         {/* LEFT: ENROLLMENT FORM */}
 // //         <div className="xl:col-span-4">
 // //           <div className="bg-white p-8 rounded-[2.5rem] border border-blue-100 shadow-md sticky top-8">
 // //             <h2 className="text-xl font-black mb-8 flex items-center gap-3 text-slate-800">
 // //               <UserPlus className="text-blue-600" size={24} /> New Enrollment
 // //             </h2>
-            
+
 // //             <form onSubmit={handleSubmit} className="space-y-5">
 // //               <div>
 // //                 <label className="block text-[10px] font-black text-slate-400 uppercase ml-1 mb-2 tracking-widest">Full Name</label>
@@ -172,7 +172,7 @@
 // //                 <FileText size={16} /> DOWNLOAD CSV
 // //               </button>
 // //             </div>
-            
+
 // //             <div className="overflow-x-auto">
 // //               <table className="w-full text-left">
 // //                 <thead className="bg-blue-50/20">
@@ -289,7 +289,7 @@
 //   return (
 //     <div className="min-h-screen bg-[#F3F4F6] p-4 md:p-6 lg:p-12 font-sans text-slate-900">
 //       <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
-        
+
 //         {/* HEADER */}
 //         <header className="flex flex-col md:flex-row justify-between items-center bg-white/80 backdrop-blur-md p-5 md:p-6 rounded-2xl md:rounded-3xl border border-white shadow-sm gap-4">
 //           <div className="flex items-center gap-4 w-full md:w-auto">
@@ -314,7 +314,7 @@
 //         </header>
 
 //         <main className="grid grid-cols-1 xl:grid-cols-12 gap-6 md:gap-8 items-start">
-          
+
 //           {/* FORM CARD */}
 //           <div className="xl:col-span-5 bg-white rounded-3xl md:rounded-[2.5rem] shadow-xl shadow-slate-200 border border-white p-6 md:p-10">
 //             <div className="mb-6">
@@ -466,9 +466,9 @@
 
 
 import React, { useState, useEffect } from 'react';
-import { 
-  UserPlus, ShieldCheck, Phone, BookOpen, Star, 
-  GraduationCap, ChevronDown, Lock, Mail, Gift, 
+import {
+  UserPlus, ShieldCheck, Phone, BookOpen, Star,
+  GraduationCap, ChevronDown, Lock, Mail, Gift,
   Layers, Briefcase, Calendar, Cpu, Globe
 } from 'lucide-react';
 
@@ -483,24 +483,24 @@ const RegistrationPortal = () => {
     degreeType: 'B.Tech',
     cgpa: '',
     couponCode: '',
-    enrollmentType: 'Course', 
+    enrollmentType: 'Course',
     mode: 'Online',
     passOutYear: '2026',
     paymentStatus: 'Pending'
   });
 
   const [users, setUsers] = useState([]);
-  
+
   const fetchUsers = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/students/");
+      const res = await fetch("http://192.168.1.23:8000/api/students/");
       const data = await res.json();
       setUsers(data);
     } catch (err) {
       console.log("Fetch error:", err);
     }
   };
-  
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -516,7 +516,7 @@ const RegistrationPortal = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:8000/api/register_student/", {
+      const response = await fetch("http://192.168.1.23:8000/api/register_student/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
@@ -526,10 +526,10 @@ const RegistrationPortal = () => {
       if (response.ok) {
         setUsers([data, ...users]);
         alert("Student onboarded successfully! 🚀");
-        setFormData({ 
-          name: '', phone: '', email: '', password: '', collegeName: '', 
-          branch: '', degreeType: 'B.Tech', cgpa: '', couponCode: '', 
-          enrollmentType: 'Course', mode: 'Online', passOutYear: '2026', paymentStatus: 'Pending' 
+        setFormData({
+          name: '', phone: '', email: '', password: '', collegeName: '',
+          branch: '', degreeType: 'B.Tech', cgpa: '', couponCode: '',
+          enrollmentType: 'Course', mode: 'Online', passOutYear: '2026', paymentStatus: 'Pending'
         });
       } else {
         alert("Registration failed: " + JSON.stringify(data));
@@ -542,7 +542,7 @@ const RegistrationPortal = () => {
   return (
     <div className="min-h-screen bg-[#F3F4F6] p-4 lg:p-12 font-sans text-slate-900">
       <div className="max-w-7xl mx-auto space-y-8">
-        
+
         <header className="flex flex-col md:flex-row justify-between items-center bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-white shadow-sm">
           <div className="flex items-center gap-4">
             <div className="bg-indigo-600 p-3 rounded-2xl shadow-indigo-200 shadow-lg">
@@ -567,7 +567,7 @@ const RegistrationPortal = () => {
         </header>
 
         <main className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
-          
+
           {/* FORM CARD */}
           <div className="xl:col-span-5 bg-white rounded-[2.5rem] shadow-2xl shadow-slate-200 border border-white p-6 lg:p-10">
             <div className="mb-8">
@@ -587,19 +587,19 @@ const RegistrationPortal = () => {
                     <label className="text-[10px] font-bold text-slate-400 uppercase mb-1 block ml-1">Email</label>
                     <input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="email@domain.com" className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm" />
                   </div>
-                  
+
                   <div className="relative">
                     <label className="text-[10px] font-bold text-slate-400 uppercase mb-1 block ml-1">Phone</label>
                     <div className="relative">
-                       <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size={14} />
-                       <input name="phone" value={formData.phone} onChange={handleChange} placeholder="9876543210" className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 pl-10 outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm" />
+                      <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size={14} />
+                      <input name="phone" value={formData.phone} onChange={handleChange} placeholder="9876543210" className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 pl-10 outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm" />
                     </div>
                   </div>
                 </div>
 
                 <div className="relative">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase mb-1 block ml-1">Password</label>
-                    <input name="password" type="password" value={formData.password} onChange={handleChange} placeholder="••••••••" className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm" />
+                  <label className="text-[10px] font-bold text-slate-400 uppercase mb-1 block ml-1">Password</label>
+                  <input name="password" type="password" value={formData.password} onChange={handleChange} placeholder="••••••••" className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm" />
                 </div>
               </div>
 
@@ -657,11 +657,11 @@ const RegistrationPortal = () => {
               </div>
 
               <div className="relative">
-                  <label className="text-[10px] font-bold text-emerald-500 uppercase mb-1 block ml-1">Coupon Code</label>
-                  <div className="relative">
-                    <Gift size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-400" />
-                    <input name="couponCode" value={formData.couponCode} onChange={handleChange} placeholder="SAVE10" className="w-full bg-emerald-50/50 border border-emerald-100 rounded-2xl p-4 pl-10 outline-none text-sm font-bold text-emerald-700 placeholder:text-emerald-300" />
-                  </div>
+                <label className="text-[10px] font-bold text-emerald-500 uppercase mb-1 block ml-1">Coupon Code</label>
+                <div className="relative">
+                  <Gift size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-400" />
+                  <input name="couponCode" value={formData.couponCode} onChange={handleChange} placeholder="SAVE10" className="w-full bg-emerald-50/50 border border-emerald-100 rounded-2xl p-4 pl-10 outline-none text-sm font-bold text-emerald-700 placeholder:text-emerald-300" />
+                </div>
               </div>
 
               <button type="submit" className="w-full bg-indigo-600 text-white font-black py-5 rounded-[2rem] hover:bg-indigo-700 shadow-xl shadow-indigo-100 transition-all transform active:scale-[0.98] flex items-center justify-center gap-3 mt-4">
@@ -681,57 +681,57 @@ const RegistrationPortal = () => {
             </div>
 
             {/* MOBILE VIEW: CARDS (Hidden on Large Screens) */}
-<div className="block lg:hidden p-4 space-y-4">
-  {users.length === 0 ? (
-    <div className="p-10 text-center text-slate-300 italic">
-      No registrations found.
-    </div>
-  ) : (
-    users.map((user, idx) => (
-      <div 
-        key={idx} 
-        className="bg-slate-50 border border-slate-100 rounded-3xl p-5 space-y-4 shadow-sm"
-      >
-        {/* Header: Avatar and Name */}
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center font-black text-lg">
-            {user.name?.charAt(0)}
-          </div>
-          <div>
-            <span className="block font-black text-slate-800 text-sm">
-              {user.name}
-            </span>
-            <span className="block text-[10px] text-slate-400 font-bold uppercase">
-              {user.phone}
-            </span>
-          </div>
-        </div>
+            <div className="block lg:hidden p-4 space-y-4">
+              {users.length === 0 ? (
+                <div className="p-10 text-center text-slate-300 italic">
+                  No registrations found.
+                </div>
+              ) : (
+                users.map((user, idx) => (
+                  <div
+                    key={idx}
+                    className="bg-slate-50 border border-slate-100 rounded-3xl p-5 space-y-4 shadow-sm"
+                  >
+                    {/* Header: Avatar and Name */}
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center font-black text-lg">
+                        {user.name?.charAt(0)}
+                      </div>
+                      <div>
+                        <span className="block font-black text-slate-800 text-sm">
+                          {user.name}
+                        </span>
+                        <span className="block text-[10px] text-slate-400 font-bold uppercase">
+                          {user.phone}
+                        </span>
+                      </div>
+                    </div>
 
-        {/* Info Grid: Academics & CGPA */}
-        <div className="grid grid-cols-2 gap-2 text-[10px] font-bold text-slate-500 uppercase">
-          <div className="bg-white p-2 rounded-xl border border-slate-100">
-            <span className="block text-indigo-400 mb-1">Academics</span>
-            {user.branch}
-          </div>
-          <div className="bg-white p-2 rounded-xl border border-slate-100 text-center">
-            <span className="block text-indigo-400 mb-1">Score</span>
-            ⭐ {user.cgpa}
-          </div>
-        </div>
+                    {/* Info Grid: Academics & CGPA */}
+                    <div className="grid grid-cols-2 gap-2 text-[10px] font-bold text-slate-500 uppercase">
+                      <div className="bg-white p-2 rounded-xl border border-slate-100">
+                        <span className="block text-indigo-400 mb-1">Academics</span>
+                        {user.branch}
+                      </div>
+                      <div className="bg-white p-2 rounded-xl border border-slate-100 text-center">
+                        <span className="block text-indigo-400 mb-1">Score</span>
+                        ⭐ {user.cgpa}
+                      </div>
+                    </div>
 
-        {/* Footer: Badges */}
-        <div className="flex justify-between items-center pt-2">
-          <span className="text-[9px] font-black uppercase text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
-            {user.mode}
-          </span>
-          <span className="text-[9px] font-black uppercase text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-            {user.enrollmentType}
-          </span>
-        </div>
-      </div>
-    ))
-  )}
-</div>
+                    {/* Footer: Badges */}
+                    <div className="flex justify-between items-center pt-2">
+                      <span className="text-[9px] font-black uppercase text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
+                        {user.mode}
+                      </span>
+                      <span className="text-[9px] font-black uppercase text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                        {user.enrollmentType}
+                      </span>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
 
             {/* DESKTOP VIEW: TABLE (Hidden on Mobile) */}
             <div className="hidden lg:block overflow-x-auto">

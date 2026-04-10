@@ -15,7 +15,7 @@ const Users = () => {
     markAsSeen();
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/enrollments/');
+        const response = await fetch('http://192.168.1.23:8000/api/enrollments/');
         const result = await response.json();
         const dataArray = Array.isArray(result) ? result : result.data;
 
@@ -26,11 +26,16 @@ const Users = () => {
             itemsArray = u.items;
           } else if (typeof u.items === "string") {
             try {
-              itemsArray = JSON.parse(u.items);
+              const parsed = JSON.parse(u.items);
+              itemsArray = Array.isArray(parsed) ? parsed : [parsed];
             } catch {
               itemsArray = [];
             }
+          } else if (u.items && typeof u.items === "object") {
+            itemsArray = [u.items];
           }
+          
+          if (!Array.isArray(itemsArray)) itemsArray = [];
 
           const totalFee = Number(u.total_fee) || 0;
           const paidAmount = Number(u.amount_paid) || 0;

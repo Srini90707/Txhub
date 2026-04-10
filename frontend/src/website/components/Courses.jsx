@@ -3,6 +3,11 @@ import { Star, CheckCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { CartContext } from "../context/CartContext";
+import awsImg from "../assets/aws.jpg";
+import javaImg from "../assets/java_full.jpg";
+import reactImg from "../assets/react_full.jpg";
+import mlImg from "../assets/ml.jpg";
+import uiImg from "../assets/ui_ux.jpg";
 
 
 const trendingCourses = [
@@ -13,7 +18,7 @@ const trendingCourses = [
     students: "1,240 students",
     rating: "4.9",
     price: "3,999",
-    img: "https://images.unsplash.com/photo-1555066931-4365d14bab8c",
+    img: reactImg,
   },
   {
     id: 1,
@@ -31,7 +36,7 @@ const trendingCourses = [
     students: "1,050 students",
     rating: "4.8",
     price: "3,999",
-    img: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e",
+    img: uiImg,
   },
 ];
 
@@ -43,7 +48,7 @@ const popularCourses = [
     students: "2,100 students",
     rating: "4.9",
     price: "3,999",
-    img: "https://tse4.mm.bing.net/th/id/OIP.FRaBEI8XYMZ8X0MjENuclQHaD4?pid=Api&P=0&h=180",
+    img: awsImg,
   },
   {
     id: 3,
@@ -52,7 +57,7 @@ const popularCourses = [
     students: "1,800 students",
     rating: "4.8",
     price: "3,999",
-    img: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4",
+    img: javaImg,
   },
   {
     id: 5,
@@ -61,7 +66,7 @@ const popularCourses = [
     students: "950 students",
     rating: "4.7",
     price: "3,999",
-    img: "https://tse4.mm.bing.net/th/id/OIP.SQfKDBTDMvca6c2hP_GGtwHaEB?pid=Api&P=0&h=180",
+    img: mlImg,
   },
 ];
 

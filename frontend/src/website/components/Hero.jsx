@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import heroBg from "../assets/hero.png";
+// import heroBg from "../assets/hero.png";
 
 import { AuthContext } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import { BookOpen, Compass, Tv, Users, ShoppingCart, LayoutGrid, Briefcase, Rocket, Sparkles } from "lucide-react";
+import { BookOpen, Compass, Tv, Users, Briefcase } from "lucide-react";
 
 // SVG Line Component with animated glowing packet
 const FlowingLine = ({ pathD, delay = 0 }) => (
@@ -165,8 +165,8 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* --- GRAPHIC LAYER --- */}
-      <div className="absolute z-0 inset-0 w-full h-full pointer-events-none md:pointer-events-auto overflow-hidden">
+      {/* --- GRAPHIC LAYER (HIDDEN ON MOBILE) --- */}
+      <div className="hidden md:block absolute z-0 inset-0 w-full h-full pointer-events-none md:pointer-events-auto overflow-hidden">
         <style>
           {`
             @keyframes float3D {

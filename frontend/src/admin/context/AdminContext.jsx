@@ -5,7 +5,7 @@ const AdminContext = createContext();
 export const AdminProvider = ({ children }) => {
   const [studentCount, setStudentCount] = useState(0);
   const [loading, setLoading] = useState(false);
-  
+
   // Persistent storage for the last seen student count
   const [lastSeenCount, setLastSeenCount] = useState(() => {
     return parseInt(localStorage.getItem('lastSeenCount') || '0', 10);
@@ -14,7 +14,7 @@ export const AdminProvider = ({ children }) => {
   const fetchStudentCount = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/api/enrollments/');
+      const response = await fetch('http://192.168.1.23:8000/api/enrollments/');
       const result = await response.json();
       const dataArray = Array.isArray(result) ? result : result.data;
       setStudentCount((dataArray || []).length);
@@ -38,12 +38,12 @@ export const AdminProvider = ({ children }) => {
   };
 
   return (
-    <AdminContext.Provider value={{ 
-      studentCount, 
+    <AdminContext.Provider value={{
+      studentCount,
       newCount,
-      loading, 
+      loading,
       markAsSeen,
-      refreshCount: fetchStudentCount 
+      refreshCount: fetchStudentCount
     }}>
       {children}
     </AdminContext.Provider>

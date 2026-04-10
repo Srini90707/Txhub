@@ -12,15 +12,18 @@ import {
   CheckCircle2,
   Calendar,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
+  BookOpen
 } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
+import { CartContext } from "../context/CartContext";
 
 const CheckoutPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { items = [] } = location.state || {};
   const { user } = useContext(AuthContext);
+  const { clearCart } = useContext(CartContext);
 
 
   const [billingCountry, setBillingCountry] = useState("India");
@@ -84,7 +87,7 @@ const CheckoutPage = () => {
 
       console.log("📧 Sending email:", email);
 
-      const response = await fetch("http://localhost:8000/api/enroll/", {
+      const response = await fetch("http://192.168.1.23:8000/api/enroll/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -107,6 +110,11 @@ const CheckoutPage = () => {
       if (response.ok) {
         console.log("✅ Payment Success:", data);
         alert("Enrollment & Payment initiated successfully ✅");
+
+        // 🔥 Flush cart
+        if (typeof clearCart === 'function') {
+          clearCart();
+        }
 
         // 🔥 Redirect to My Courses to see the new enrollment
         navigate("/my-courses");
@@ -356,11 +364,17 @@ const CheckoutPage = () => {
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.25em] mb-4">Enrollment Details</p>
                 {items.map((item, i) => (
                   <div key={i} className="group flex gap-4 p-4 rounded-2xl bg-slate-50/50 border border-slate-100 hover:border-blue-200 transition-all duration-300">
-                    <img
-                      src={item.img}
-                      alt={item.title}
-                      className="w-14 h-14 rounded-xl object-cover shadow-md group-hover:scale-105 transition-transform"
-                    />
+                    {item.img ? (
+                      <img
+                        src={item.img}
+                        alt={item.title}
+                        className="w-14 h-14 rounded-xl object-cover shadow-md group-hover:scale-105 transition-transform shrink-0"
+                      />
+                    ) : (
+                      <div className="w-14 h-14 rounded-xl bg-blue-100/50 text-blue-500 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform shrink-0">
+                        <BookOpen size={24} />
+                      </div>
+                    )}
                     <div className="flex-1 min-w-0">
                       <h3 className="font-bold text-slate-800 text-sm leading-tight truncate group-hover:text-blue-600 transition-colors">{item.title}</h3>
                       <div className="flex items-center gap-2 mt-1.5">

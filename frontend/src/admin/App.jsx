@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
+import { AdminProvider } from './context/AdminContext';
 import AdminLayout from './layouts/AdminLayout';
 import Dashboard from './pages/Dashboard';
 import Users from './pages/Users';
@@ -8,15 +9,17 @@ import ClassManagement from './pages/ClassManagement';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<AdminLayout />}>
-        <Route index element={<Dashboard />} />
-        <Route path="users" element={<Users />} />
-        <Route path="registerUser" element={<Tenants />} />
-        <Route path="settings" element={<Settings />} />
-        <Route path="broadcast" element={<ClassManagement />} />
-      </Route>
-    </Routes>
+    <AdminProvider>
+      <Routes>
+        <Route path="/" element={<AdminLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="users" element={<Users />} />
+          <Route path="registerUser" element={<Tenants />} />
+          <Route path="settings" element={<Settings />} />
+          <Route path="broadcast" element={<ClassManagement />} />
+        </Route>
+      </Routes>
+    </AdminProvider>
   );
 }
 

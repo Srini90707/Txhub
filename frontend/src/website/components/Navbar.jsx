@@ -27,7 +27,7 @@ const categories = [
   { name: "Software Development", icon: Code, color: "text-blue-500", bg: "bg-blue-50" },
   { name: "Testing", icon: Bug, color: "text-red-500", bg: "bg-red-50" },
   { name: "Data Science", icon: Database, color: "text-cyan-500", bg: "bg-cyan-50" },
-  { name: "AI / ML", icon: Brain, color: "text-purple-500", bg: "bg-purple-50" },
+  { name: "AI/ML", icon: Brain, color: "text-purple-500", bg: "bg-purple-50" },
   { name: "DevOps", icon: Server, color: "text-orange-500", bg: "bg-orange-50" },
   { name: "Soft Skills", icon: Users, color: "text-emerald-500", bg: "bg-emerald-50" },
 ];
@@ -43,6 +43,41 @@ const Navbar = () => {
   const location = useLocation();
   const { cart } = useContext(CartContext);
   const { isLoggedIn, logout, user, openAuthModal } = useContext(AuthContext);
+  const [hasLiveSession, setHasLiveSession] = useState(false);
+
+  // Poll for Active Live Sessions linked to user's enrolled courses
+  useEffect(() => {
+    const checkLiveSessions = async () => {
+      if (!isLoggedIn || !user?.email) {
+        setHasLiveSession(false);
+        return;
+      }
+      try {
+        const [enrollmentRes, liveRes] = await Promise.all([
+          fetch(`http://192.168.1.49:8000/api/enrollments/?email=${user.email}`),
+          fetch(`http://192.168.1.49:8000/api/live/`)
+        ]);
+
+        if (enrollmentRes.ok && liveRes.ok) {
+          const enrollData = await enrollmentRes.json();
+          const liveData = await liveRes.json();
+          
+          const enrollments = enrollData.data || [];
+          const enrolledTitles = enrollments.map(e => e.title);
+          
+          const activeSessions = liveData.filter(session => enrolledTitles.includes(session.targetCourse));
+          
+          if (activeSessions.length > 0) {
+            setHasLiveSession(true);
+          } else {
+            setHasLiveSession(false);
+          }
+        }
+      } catch (err) { }
+    };
+
+    checkLiveSessions();
+  }, [isLoggedIn, user]);
 
   const isHome = location.pathname === "/";
 
@@ -116,6 +151,22 @@ const Navbar = () => {
 
         {/* ACTIONS */}
         <div className="flex items-center gap-2 sm:gap-4">
+          
+          {/* Smart Live Blinker (Desktop + Mobile) */}
+          {hasLiveSession && (
+            <button
+              onClick={() => navigate("/my-courses")}
+              className="flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-rose-50 border border-rose-100 rounded-xl text-rose-600 font-bold hover:bg-rose-100 transition-all shadow-sm"
+              title="You have an active live session!"
+            >
+              <span className="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-rose-600"></span>
+              </span>
+              <span className="text-[10px] sm:text-sm uppercase sm:normal-case font-black sm:font-semibold tracking-wider sm:tracking-normal">Live</span>
+            </button>
+          )}
+
           {/* Explore (Desktop Dropdown) */}
           <div
             className="hidden lg:block relative"

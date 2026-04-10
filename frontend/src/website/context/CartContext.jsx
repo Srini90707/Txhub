@@ -24,8 +24,12 @@ export const CartProvider = ({ children }) => {
     return cart.some((item) => item.title === courseTitle);
   };
 
+  const clearCart = () => {
+    setCart([]);
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, isInCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, isInCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );

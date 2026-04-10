@@ -35,11 +35,11 @@ const Login = () => {
     }
 
     setErrors(newErrors);
-    
+
     if (Object.keys(newErrors).length > 0) {
       toast.error("Please fix the errors in the form");
     }
-    
+
     return Object.keys(newErrors).length === 0;
   };
 
@@ -59,13 +59,13 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validate()) return;
 
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8000/api/verify/", {
+      const response = await fetch("http://192.168.1.23:8000/api/verify/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -105,7 +105,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8000/api/auth/google/", {
+      const res = await fetch("http://192.168.1.23:8000/api/auth/google/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -185,11 +185,10 @@ const Login = () => {
                   value={form.email}
                   onChange={handleChange}
                   placeholder="Email Address"
-                  className={`w-full pl-12 pr-4 py-4 rounded-2xl outline-none transition-all font-medium border ${
-                    errors.email 
-                      ? 'bg-red-50/50 border-red-200 focus:ring-red-500/10 text-red-900 placeholder:text-red-300' 
+                  className={`w-full pl-12 pr-4 py-4 rounded-2xl outline-none transition-all font-medium border ${errors.email
+                      ? 'bg-red-50/50 border-red-200 focus:ring-red-500/10 text-red-900 placeholder:text-red-300'
                       : 'bg-gray-100/80 border-transparent focus:ring-blue-500/20 focus:bg-white text-gray-700 placeholder:text-gray-400'
-                  }`}
+                    }`}
                 />
               </div>
               {errors.email && (
@@ -209,11 +208,10 @@ const Login = () => {
                   value={form.password}
                   onChange={handleChange}
                   placeholder="Password"
-                  className={`w-full pl-12 pr-12 py-4 rounded-2xl outline-none transition-all font-medium border ${
-                    errors.password 
-                      ? 'bg-red-50/50 border-red-200 focus:ring-red-500/10 text-red-900 placeholder:text-red-300' 
+                  className={`w-full pl-12 pr-12 py-4 rounded-2xl outline-none transition-all font-medium border ${errors.password
+                      ? 'bg-red-50/50 border-red-200 focus:ring-red-500/10 text-red-900 placeholder:text-red-300'
                       : 'bg-gray-100/80 border-transparent focus:ring-blue-500/20 focus:bg-white text-gray-700 placeholder:text-gray-400'
-                  }`}
+                    }`}
                 />
                 <button
                   type="button"

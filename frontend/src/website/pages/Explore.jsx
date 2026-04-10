@@ -5,7 +5,11 @@ import { Link } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 import { AuthContext } from "../context/AuthContext";
 import trainingBg from "../assets/training.png";
-import testingImg from "../assets/testing.png";
+import awsImg from "../assets/aws.jpg";
+import javaImg from "../assets/java_full.jpg";
+import reactImg from "../assets/react_full.jpg";
+import mlImg from "../assets/ml.jpg";
+import uiImg from "../assets/ui_ux.jpg";
 
 const allCourses = [
   {
@@ -16,7 +20,7 @@ const allCourses = [
     rating: "4.9",
     students: "1,240 students",
     price: "3,999",
-    img: "https://images.unsplash.com/photo-1555066931-4365d14bab8c",
+    img: reactImg,
   },
   {
     id: 1,
@@ -36,7 +40,7 @@ const allCourses = [
     rating: "4.8",
     students: "1,050 students",
     price: "3,999",
-    img: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e",
+    img: uiImg,
   },
   {
     id: 3,
@@ -46,7 +50,7 @@ const allCourses = [
     rating: "4.6",
     students: "980 students",
     price: "3,999",
-    img: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4",
+    img: javaImg,
   },
   {
     id: 4,
@@ -56,7 +60,7 @@ const allCourses = [
     rating: "4.9",
     students: "1,400 students",
     price: "3,999",
-    img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa",
+    img: awsImg,
   },
   {
     id: 5,
@@ -66,25 +70,18 @@ const allCourses = [
     rating: "4.8",
     students: "1,200 students",
     price: "3,999",
-    img: "https://images.unsplash.com/photo-1677442136019-21780ecad995",
-  },
-  {
-    id: 6,
-    title: "MERN Stack Manual Testing",
-    category: "Testing",
-    level: "Training & Internship",
-    rating: "4.8",
-    students: "650 students",
-    price: "3,999",
-    img: testingImg,
+    img: mlImg,
   },
 ];
 
 const Explore = () => {
-  const [search, setSearch] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
-  const [category, setCategory] = useState(location.state?.category || "All");
+
+
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("All");
+
   const [notification, setNotification] = useState(null);
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
 
@@ -96,7 +93,7 @@ const Explore = () => {
     const fetchEnrollments = async () => {
       if (user?.email) {
         try {
-          const res = await fetch(`http://localhost:8000/api/enrollments/?email=${user.email}`);
+          const res = await fetch(`http://192.168.1.49:8000/api/enrollments/?email=${user.email}`);
           const data = await res.json();
           if (res.ok) setUserEnrollments(data.data || []);
         } catch (err) {
@@ -112,8 +109,19 @@ const Explore = () => {
   };
 
   const filteredCourses = allCourses.filter((course) => {
-    const matchesCategory = category === "All" || course.category === category;
-    const matchesSearch = course.title.toLowerCase().includes(search.toLowerCase());
+    const cleanSearch = search.toLowerCase().trim();
+
+    const matchesCategory =
+      category === "All" ||
+      course.category.toLowerCase().replace(/\s/g, "") ===
+      category.toLowerCase().replace(/\s/g, "");
+
+    const matchesSearch =
+      cleanSearch === ""
+        ? true
+        : course.title.toLowerCase().includes(cleanSearch) ||
+        course.category.toLowerCase().includes(cleanSearch);
+
     return matchesCategory && matchesSearch;
   });
 
@@ -126,6 +134,16 @@ const Explore = () => {
       setTimeout(() => setNotification(null), 2000);
     }
   };
+
+  useEffect(() => {
+    if (location.state?.category) {
+      setCategory(location.state.category);
+    }
+  }, [location.state]);
+
+
+
+
 
   return (
     <>
@@ -161,7 +179,14 @@ const Explore = () => {
               Master new skills with our comprehensive training and placement support.
             </p>
 
-            <div className="mt-6 flex flex-col gap-4 max-w-2xl bg-white/90 backdrop-blur-xl rounded-[2rem] p-2 sm:p-1.5 shadow-2xl shadow-blue-500/10 border border-white/50 transition-all sm:flex-row sm:items-center sm:rounded-full">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const grid = document.getElementById("courses-grid");
+                if (grid) grid.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="mt-6 flex flex-col gap-4 max-w-2xl bg-white/90 backdrop-blur-xl rounded-[2rem] p-2 sm:p-1.5 shadow-2xl shadow-blue-500/10 border border-white/50 transition-all sm:flex-row sm:items-center sm:rounded-full"
+            >
               <div className="flex items-center flex-1 bg-slate-50/50 rounded-2xl sm:bg-transparent">
                 <Search className="ml-5 text-blue-500 shrink-0" size={22} />
                 <input
@@ -171,23 +196,30 @@ const Explore = () => {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
+                {/* Filter Icon for Mobile */}
                 <button
+                  type="button"
                   onClick={() => setIsFilterDrawerOpen(true)}
                   className="lg:hidden p-3 mr-2 bg-white text-blue-600 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-100 active:scale-95"
                 >
                   <Filter size={20} />
                 </button>
               </div>
-              <button className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-blue-500 text-white px-10 py-4 sm:py-3.5 rounded-2xl sm:rounded-full font-black hover:shadow-xl hover:shadow-blue-500/20 transition-all active:scale-95 text-sm sm:text-base uppercase tracking-wider">
+
+              {/* Main Search Button */}
+              <button
+                type="submit"
+                className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-blue-500 text-white px-10 py-4 sm:py-3.5 rounded-2xl sm:rounded-full font-black hover:shadow-xl hover:shadow-blue-500/20 transition-all active:scale-95 text-sm sm:text-base uppercase tracking-wider"
+              >
                 Search
               </button>
-            </div>
+            </form>
           </div>
         </div>
       </section>
 
       {/* Main Layout */}
-      <section className="bg-white py-10 sm:py-16">
+      <section id="courses-grid" className="bg-white py-10 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-10 lg:px-16 grid lg:grid-cols-4 gap-8">
 
           {/* Sidebar */}
@@ -199,7 +231,9 @@ const Explore = () => {
                 {["All", "Software Development", "Testing", "UI/UX Design", "DevOps", "AI/ML", "Data Science", "Soft Skills"].map((cat) => (
                   <button
                     key={cat}
-                    onClick={() => setCategory(cat)}
+                    onClick={() => {
+                      setCategory(cat);
+                    }}
                     className={`whitespace-nowrap px-5 py-2.5 rounded-xl transition-all duration-300 font-bold text-sm ${category === cat
                       ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20 scale-[1.02]"
                       : "text-slate-500 bg-slate-50 hover:bg-blue-50 hover:text-blue-600"
@@ -401,3 +435,9 @@ const Explore = () => {
 };
 
 export default Explore;
+
+
+
+
+
+// 1

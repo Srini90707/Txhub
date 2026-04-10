@@ -54,7 +54,7 @@ const AuthModal = () => {
       }
 
       const response = await fetch(
-        `http://localhost:8000/api/${endpoint}`,
+        `http://192.168.1.23:8000/api/${endpoint}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

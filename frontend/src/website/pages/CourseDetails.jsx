@@ -5,7 +5,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 import { AuthContext } from "../context/AuthContext";
-import { Star, CheckCircle, Clock, Calendar, MapPin, Globe, BookOpen, GraduationCap, ArrowRight } from "lucide-react";
+import { Star, CheckCircle, Clock, Calendar, MapPin, Globe, BookOpen, GraduationCap, ArrowRight, Video } from "lucide-react";
+import awsImg from "../assets/aws.jpg";
+import javaImg from "../assets/java_full.jpg";
+import reactImg from "../assets/react_full.jpg";
+import mlImg from "../assets/ml.jpg";
+import uiImg from "../assets/ui_ux.jpg";
 
 /**
  * Detailed course data including all curricula, requirements, and metadata.
@@ -25,7 +30,7 @@ const courseData = [
     location: "Hyderabad",
     batchStart: "04 May 2026",
     category: "Software Development",
-    img: "https://images.unsplash.com/photo-1555066931-4365d14bab8c",
+    img: reactImg,
     instructor: "John Developer",
     instructorBio: "Senior Full Stack Engineer with 10+ years of experience in React and Node.js ecosystems.",
     instructorImage: "https://randomuser.me/api/portraits/men/32.jpg",
@@ -102,7 +107,7 @@ const courseData = [
     location: "Hyderabad",
     batchStart: "04 May 2026",
     category: "UI/UX Design",
-    img: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e",
+    img: uiImg,
     instructor: "Design Expert Sarah",
     learn: [
       "User Research & Empathy Mapping",
@@ -135,7 +140,7 @@ const courseData = [
     location: "Hyderabad",
     batchStart: "04 May 2026",
     category: "Software Development",
-    img: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4",
+    img: javaImg,
     instructor: "Advanced Java Guru",
     learn: [
       "Core Java & Multi-threading",
@@ -168,7 +173,7 @@ const courseData = [
     location: "Remote",
     batchStart: "04 May 2026",
     category: "DevOps",
-    img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa",
+    img: awsImg,
     instructor: "Cloud Solutions Architect",
     learn: [
       "AWS Core Services (EC2, S3, RDS)",
@@ -201,7 +206,7 @@ const courseData = [
     location: "Remote",
     batchStart: "5 May 2026",
     category: "AI/ML",
-    img: "https://images.unsplash.com/photo-1677442136019-21780ecad995",
+    img: mlImg,
     instructor: "ML Scientist Alex",
     learn: [
       "Supervised & Unsupervised Learning",
@@ -220,39 +225,6 @@ const courseData = [
       "Basic understanding of Calculus",
       "A machine capable of running ML libs"
     ]
-  },
-  {
-    id: 6,
-    title: "MERN Stack Manual Testing",
-    description: "Master the specific manual testing workflows for modern MERN stack applications. Learn how to validate MongoDB schemas, test Express APIs, verify React frontend states, and ensure Node.js runtime reliability through systematic QA processes.",
-    price: "3,999",
-    rating: "4.8",
-    students: "650 students",
-    language: "English",
-    duration: "2 Months",
-    mode: "Training & Internship",
-    location: "Remote",
-    batchStart: "04 May 2026",
-    category: "Testing",
-    img: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3",
-    instructor: "QA Specialist Alex",
-    learn: [
-      "Manual verification of MongoDB data integrity",
-      "Manual API testing (Postman) for Express routes",
-      "React Component state and UI validation",
-      "Cross-browser and responsiveness testing"
-    ],
-    content: [
-      "Introduction to MERN QA",
-      "Database Validation Strategies",
-      "API Manual Verification Workflow",
-      "UI/UX & State Integrity Testing"
-    ],
-    requirements: [
-       "Basic understanding of web applications",
-       "Curiosity for finding bugs and edge cases",
-       "Laptop with internet access"
-    ]
   }
 ];
 
@@ -270,17 +242,28 @@ const CourseDetails = () => {
   const { isLoggedIn, openAuthModal, user } = useContext(AuthContext);
   const [notification, setNotification] = useState(null);
   const [enrollments, setEnrollments] = useState([]);
+  const [courseLiveSessions, setCourseLiveSessions] = useState([]);
 
   useEffect(() => {
-    const fetchEnrollments = async () => {
+    const fetchEnrollmentsAndLive = async () => {
+      // 1. Fetch live classes globally
+      try {
+        const liveRes = await fetch(`http://192.168.1.49:8000/api/live/`);
+        if (liveRes.ok) {
+          const liveData = await liveRes.json();
+          setCourseLiveSessions(liveData);
+        }
+      } catch (err) { console.error("Live fetch failed"); }
+
+      // 2. Fetch Enrollments
       if (!user?.email) return;
       try {
-        const response = await fetch(`http://localhost:8000/api/enrollments/?email=${user.email}`);
+        const response = await fetch(`http://192.168.1.49:8000/api/enrollments/?email=${user.email}`);
         const data = await response.json();
         if (response.ok) setEnrollments(data.data || []);
       } catch (err) { console.error("Enrollment check failed"); }
     };
-    fetchEnrollments();
+    fetchEnrollmentsAndLive();
   }, [user]);
 
   useEffect(() => {
@@ -312,6 +295,8 @@ const CourseDetails = () => {
       navigate("/checkout", { state: { items: [course], direct: true } });
     }
   };
+
+  const activeLiveSessions = courseLiveSessions.filter(session => session.targetCourse === course.title);
 
   const handleAddToCart = () => {
     const success = addToCart(course);
@@ -411,6 +396,56 @@ const CourseDetails = () => {
                 </div>
               ))}
             </div>
+
+            {activeLiveSessions.length > 0 && (
+              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-8 rounded-[2.5rem] shadow-xl mt-10 relative overflow-hidden text-white">
+                <div className="absolute top-0 right-0 p-8 opacity-10">
+                  <Video size={100} />
+                </div>
+                <div className="relative z-10 flex items-center justify-between">
+                  <div>
+                    <h2 className="text-2xl font-black mb-2 flex items-center gap-3">
+                      <span className="relative flex h-4 w-4">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-4 w-4 bg-rose-500 border-2 border-white"></span>
+                      </span> 
+                      Active Live Broadcasts
+                    </h2>
+                    <p className="text-blue-100 font-medium">Join scheduled interactive sessions led by industry experts.</p>
+                  </div>
+                </div>
+                
+                <div className="mt-8 space-y-4 relative z-10">
+                  {activeLiveSessions.map((session, idx) => (
+                    <div key={idx} className="bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-blue-200 mb-1">{session.batchMonth} Batch</p>
+                        <h3 className="font-bold text-lg">{session.topic}</h3>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2 bg-black/20 px-3 py-1.5 rounded-lg text-sm font-bold">
+                          <Calendar size={16} /> {session.date}
+                        </div>
+                        {session.time && (
+                           <div className="flex items-center gap-2 bg-black/20 px-3 py-1.5 rounded-lg text-sm font-bold">
+                             <Clock size={16} /> {session.time}
+                           </div>
+                        )}
+                        {enrolled ? (
+                          <a href={session.link} target="_blank" rel="noreferrer" className="px-5 py-2.5 bg-white text-blue-600 rounded-xl font-bold hover:scale-105 transition-transform flex items-center gap-2 shadow-xl shrink-0">
+                            <Video size={18} /> Join Now
+                          </a>
+                        ) : (
+                          <button onClick={handleEnroll} className="px-5 py-2.5 bg-white/20 text-white rounded-xl font-bold flex items-center gap-2 shadow-inner shrink-0 cursor-not-allowed">
+                            <Lock size={18} /> Enroll to Unlock
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Tabs for Learning/Curriculum */}
             <div className="mt-12 space-y-12">
